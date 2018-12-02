@@ -15,9 +15,9 @@ body{
 .container-fluid{
     height: 40%;
 }
-.hide div{
+/* .hide div{
     visibility: hidden;
-}
+} */
 header{
     padding: 1em;
     margin-top: 2em;
