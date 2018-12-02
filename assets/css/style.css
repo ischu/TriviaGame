@@ -9,8 +9,14 @@ body{
 }
 .container{
     background-color: blue;
-    height: min-content;
+    height: content;
     align-self: center;
+}
+.container-fluid{
+    height: 40%;
+}
+.hide div{
+    visibility: hidden;
 }
 header{
     padding: 1em;
@@ -20,8 +26,17 @@ header{
 }
 main{
     background-color: green;
-
+    margin-bottom: 1em;
 }
 #choiceSection{
     text-align: left;
+}
+.choice{
+    width: 100%;
+    padding: 1px;
+}
+.choice:hover{
+    color: purple;
+    padding: 0;
+    border: solid 1px black;
 }
