@@ -50,7 +50,14 @@ var questionNumber = 0;
 var currentQuestion=questionArray[questionNumber];
 // these variables store unused sections of html
 var choiceSec=null;
-// functions
+
+// screen change functions
+startButton = function (){
+    $("main").removeClass("hideDivs");
+    $("#start").remove();
+    nextQuestion();
+}
+
 nextQuestion = function () {
     // selects the question from the array at index questionNumber
     currentQuestion = questionArray[questionNumber];
@@ -91,21 +98,19 @@ answerScreen = function () {
 }
 
 finalScreen = function () {
-    // it will be time to go to final screen when questionNumber > questionArray.length
+    // the final screen displays number of correct and incorrect answers
+    // final screen has a "play again" button
+    // maybe also a total time display?
 }
 
 // jQuery
-$(document).ready(function () {
-    // adds start button (needs to be changed, as of now it shifts the height of the body)
-    
+$(document).ready(function () {    
     // $('main').children(".row").addClass('hide');
     $("#timerSection").after("<button id='start' class='btn btn-primary'>START</button>");
 
     $("#start").click(function() {
         // wait 1 second
-        $("main").removeClass("hideDivs");
-        $("#start").remove();
-        nextQuestion();
+        setTimeout(startButton, 1000 * .5);
     });
     $(".choice").click(function() {
         console.log(this.innerText);
@@ -118,7 +123,15 @@ $(document).ready(function () {
             banner = "WRONG! The correct answer is "+currentQuestion.correct();
         }
         answerScreen();
-        // wait 3 seconds
-        // nextQuestion();
+        // checks if last question has been reached
+        if (questionNumber<questionArray.length){
+            setTimeout(nextQuestion, 1000*5);
+            console.log(questionNumber, questionArray.length);
+        }
+        else{
+            console.log("ya done");
+        };
+        // else
+        // finalScreen;
     });
 });
