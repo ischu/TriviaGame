@@ -8,9 +8,8 @@ var questionOver = false;
 var wins = 0;
 var losses = 0;
 var time = 0;
-// tracks which question game is on
-var questionNumber = 0;
-var banner = "banner";
+// stores win/loss message 
+var banner = "error banner";
 // question objects
 var questionArray = [
     Q1 = {
@@ -42,21 +41,22 @@ var questionArray = [
         choiceArr: ['Linus', 'Luigi', 'Louie', 'Lars'],
         image: "assets/images/luigi.jpg",
         correct: function() {
-            return this.choiceArr[2]
+            return this.choiceArr[1]
         },
     },
 ];
+// tracks which question game is on
+var questionNumber = 0;
+var currentQuestion=questionArray[questionNumber];
 // these variables store unused sections of html
 var choiceSec=null;
-var questSec=null;
-
 // functions
 nextQuestion = function () {
     // selects the question from the array at index questionNumber
-    qObj = questionArray[questionNumber];
-    console.log(qObj);
+    currentQuestion = questionArray[questionNumber];
+    console.log(currentQuestion);
     // changes text in the question section to the question
-    $("#question").text(qObj.question);
+    $("#question").text(currentQuestion.question);
     // adds choice section if missing
     if (choiceSec){
         // places choice section back
@@ -69,23 +69,23 @@ nextQuestion = function () {
     // while loop which places choices text in each choice section
     i = 0;
     while (i < 4) {
-        $("#choice" + i).text(qObj.choiceArr[i]);
-        console.log("#choice" + i, qObj.choiceArr[i]);
+        $("#choice" + i).text(currentQuestion.choiceArr[i]);
+        console.log("#choice" + i, currentQuestion.choiceArr[i]);
         i++;
     }
     // signals it is time to go to answer screen
     questionOver = true;
-    console.log("the answer is "+qObj.correct());
+    console.log("the answer is "+currentQuestion.correct());
 }
 
 answerScreen = function () {
-    qObj = questionArray[questionNumber];
+    currentQuestion = questionArray[questionNumber];
     // changes question text to banner
     $("#question").text(banner);
     // detaches choice section and replaces them with the correct image
     choiceSec = $("#choiceSection").detach();
     $("#bottomRow").append("<img class='img-fluid' src=''/>");
-    $("img").attr("src", qObj.image);
+    $("img").attr("src", currentQuestion.image);
     // increments question number so when nextQuestion runs, the next question will be chosen
     questionNumber++;
 }
@@ -99,11 +99,26 @@ $(document).ready(function () {
     // adds start button (needs to be changed, as of now it shifts the height of the body)
     
     // $('main').children(".row").addClass('hide');
-    $("#questionSection").after("<button id='start'>START</button>");
+    $("#timerSection").after("<button id='start' class='btn btn-primary'>START</button>");
 
     $("#start").click(function() {
         // wait 1 second
         $("main").removeClass("hideDivs");
         $("#start").remove();
+        nextQuestion();
+    });
+    $(".choice").click(function() {
+        console.log(this.innerText);
+        if(this.innerText===currentQuestion.correct()){
+            console.log("correct!");
+            banner = "CORRECT!";
+        }
+        else{
+            console.log("wrong!");
+            banner = "WRONG! The correct answer is "+currentQuestion.correct();
+        }
+        answerScreen();
+        // wait 3 seconds
+        // nextQuestion();
     });
 });
