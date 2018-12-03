@@ -123,6 +123,7 @@ countDown = function () {
         timeUp = true;
     }
     $("#timer").text(time);
+    console.log(time);
 }
 timerStart = function () {
     timerRun = setInterval(countDown, 1000 * 1);
