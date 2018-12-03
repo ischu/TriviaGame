@@ -85,14 +85,10 @@ nextQuestion = function () {
         i++;
     }
     // starts timer
-    time = 30;
+    time = 10;
     $("#timer").text(time);
     timerStart();
-    // if time is up go to answerScreen
-    if(timeUp){
-        banner = "TIME UP! The correct answer is " + currentQuestion.correct();
-        answerScreen();
-    }
+
     console.log("the answer is " + currentQuestion.correct());
 }
 
@@ -108,6 +104,17 @@ answerScreen = function () {
     questionNumber++;
     // stops timer
     timerStop(timerRun);
+    
+    // checks if last question has been reached
+    if (questionNumber < questionArray.length) {
+        // goes to next question after five seconds
+        setTimeout(nextQuestion, 1000 * 5);
+        console.log(questionNumber, questionArray.length);
+    }
+    else {
+        // finalScreen;
+        console.log("ya done");
+    };
 }
 
 finalScreen = function () {
@@ -117,16 +124,18 @@ finalScreen = function () {
 }
 // timer functions
 countDown = function () {
-    if (time > 0 && !questionOver) {
+    if (time > 0) {
         time--
+        $("#timer").text(time);
     } else {
-        timeUp = true;
+        banner = "TIME UP! The correct answer is " + currentQuestion.correct();
+        answerScreen();
     }
-    $("#timer").text(time);
-    console.log(time);
+
 }
 timerStart = function () {
     timerRun = setInterval(countDown, 1000 * 1);
+    // if time is up go to answerScreen
     return timerRun;
 }
 timerStop = function () {
@@ -153,15 +162,5 @@ $(document).ready(function () {
             banner = "WRONG! The correct answer is " + currentQuestion.correct();
         }
         answerScreen();
-        // checks if last question has been reached
-        if (questionNumber < questionArray.length) {
-            setTimeout(nextQuestion, 1000 * 5);
-            console.log(questionNumber, questionArray.length);
-        }
-        else {
-            console.log("ya done");
-        };
-        // else
-        // finalScreen;
     });
 });
