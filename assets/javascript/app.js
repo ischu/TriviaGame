@@ -52,6 +52,8 @@ var questionNumber = 0;
 var currentQuestion = questionArray[questionNumber];
 // these variables store unused sections of html
 var choiceSec = null;
+var timerSec = null;
+// var divsContent = null;
 
 // screen change functions
 startButton = function () {
@@ -108,19 +110,34 @@ answerScreen = function () {
     // checks if last question has been reached
     if (questionNumber < questionArray.length) {
         // goes to next question after five seconds
-        setTimeout(nextQuestion, 1000 * 5);
+        setTimeout(nextQuestion, 1000 * 1);
         console.log(questionNumber, questionArray.length);
     }
     else {
-        // finalScreen;
+        // goes to final screen after 5 second
+        setTimeout(finalScreen, 1000 * 1);
         console.log("ya done");
     };
 }
 
 finalScreen = function () {
-    // the final screen displays number of correct and incorrect answers
-    // final screen has a "play again" button
-    // maybe also a total time display?
+    // display win/loss
+    $("#questionSection p").text("You answered "+wins+" questions correctly and "+losses+" questions incorrectly.");
+    // remove img & timer, display restart button
+    $("img").remove();
+    timerSec = $("#timerSection p").detach();
+    $("#bottomRow").before("<button id='replayButton' onclick='playAgain()'>Play again?</button>");
+}
+
+playAgain = function (){
+    $("#bottomRow").append(choiceSec);
+    $("#timerSection").append(timerSec);
+    questionNumber=0;
+    wins=0;
+    losses=0;
+    $("#replayButton").remove();
+    nextQuestion();
+
 }
 // timer functions
 countDown = function () {
@@ -129,6 +146,7 @@ countDown = function () {
         $("#timer").text(time);
     } else {
         banner = "TIME UP! The correct answer is " + currentQuestion.correct();
+        losses++;
         answerScreen();
     }
 
@@ -147,7 +165,7 @@ $(document).ready(function () {
     $("#timerSection").after("<button id='start' class='btn btn-primary'>START</button>");
 
     $("#start").click(function () {
-        // wait 1 second
+        // wait 1/2 second
         setTimeout(startButton, 1000 * .5);
     });
     $(".choice").click(function () {
@@ -156,11 +174,18 @@ $(document).ready(function () {
         if (this.innerText === currentQuestion.correct()) {
             console.log("correct!");
             banner = "CORRECT!";
+            wins++;
         }
         else {
             console.log("wrong!");
             banner = "WRONG! The correct answer is " + currentQuestion.correct();
+            losses++;
         }
         answerScreen();
     });
+    // didn't work for some reason so i just put an onclick in the button html
+    // $("#replayButton").click(function() {
+    //     console.log("replay");
+    //     playAgain();
+    // });
 });
