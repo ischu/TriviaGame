@@ -1,15 +1,10 @@
 // variables
 
-// flag is true if game has started
-var gameBegun = false;
-// flag is true go to answer screen
-var questionOver = false;
-//  flag is true if time is up
-var timeUp = false;
+
 // counter for wins and losses/timeouts
 var wins = 0;
 var losses = 0;
-var time = 30;
+
 // stores win/loss message 
 var banner = "error banner";
 // question objects
@@ -18,32 +13,36 @@ var questionArray = [
         question: "Who was the first President of the United States?",
         choiceArr: ['George Washington', 'Abraham Lincoln', 'Bob Beeper', 'Donald Trump'],
         image: "assets/images/washington.jpeg",
+        answer: 0,
         correct: function () {
-            return this.choiceArr[0]
+            return this.choiceArr[this.answer]
         },
     },
     Q2 = {
         question: "Who is the Queen of England?",
         choiceArr: ['Jemima III', 'Catherine I', 'Elizabeth II', 'Celeste IV'],
         image: "assets/images/queen.jpg",
+        answer: 2,
         correct: function () {
-            return this.choiceArr[2]
+            return this.choiceArr[this.answer]
         },
     },
     Q3 = {
         question: "What is the fourth planet from the sun?",
         choiceArr: ['Earth', 'Venus', 'Jupiter', 'Mars'],
         image: "assets/images/mars.jpg",
+        answer: 3,
         correct: function () {
-            return this.choiceArr[3]
+            return this.choiceArr[this.answer]
         },
     },
     Q4 = {
         question: "What is the name of Mario's brother?",
         choiceArr: ['Linus', 'Luigi', 'Louie', 'Lars'],
         image: "assets/images/luigi.jpg",
+        answer: 1,
         correct: function () {
-            return this.choiceArr[1]
+            return this.choiceArr[this.answer]
         },
     },
 ];
@@ -63,8 +62,6 @@ startButton = function () {
 }
 
 nextQuestion = function () {
-    // question has just begun
-    questionOver = false;
     // selects the question from the array at index questionNumber
     currentQuestion = questionArray[questionNumber];
     console.log(currentQuestion);
@@ -87,9 +84,8 @@ nextQuestion = function () {
         i++;
     }
     // starts timer
-    time = 10;
-    $("#timer").text(time);
-    timerStart();
+    $("#timer").text(timer.count);
+    timer.start();
 
     console.log("the answer is " + currentQuestion.correct());
 }
@@ -105,8 +101,8 @@ answerScreen = function () {
     // increments question number so when nextQuestion runs, the next question will be chosen
     questionNumber++;
     // stops timer
-    timerStop(timerRun);
-    
+    timer.stop(timer.run);
+
     // checks if last question has been reached
     if (questionNumber < questionArray.length) {
         // goes to next question after five seconds
@@ -122,43 +118,48 @@ answerScreen = function () {
 
 finalScreen = function () {
     // display win/loss
-    $("#questionSection p").text("You answered "+wins+" questions correctly and "+losses+" questions incorrectly.");
+    $("#questionSection p").text("You answered " + wins + " questions correctly and " + losses + " questions incorrectly.");
     // remove img & timer, display restart button
     $("img").remove();
     timerSec = $("#timerSection p").detach();
     $("#bottomRow").before("<button id='replayButton' onclick='playAgain()'>Play again?</button>");
 }
 
-playAgain = function (){
+playAgain = function () {
     $("#bottomRow").append(choiceSec);
     $("#timerSection").append(timerSec);
-    questionNumber=0;
-    wins=0;
-    losses=0;
+    questionNumber = 0;
+    wins = 0;
+    losses = 0;
     $("#replayButton").remove();
     nextQuestion();
 
 }
-// timer functions
-countDown = function () {
-    if (time > 0) {
-        time--
-        $("#timer").text(time);
-    } else {
-        banner = "TIME UP! The correct answer is " + currentQuestion.correct();
-        losses++;
-        answerScreen();
-    }
-
-}
-timerStart = function () {
-    timerRun = setInterval(countDown, 1000 * 1);
-    // if time is up go to answerScreen
-    return timerRun;
-}
-timerStop = function () {
-    clearInterval(timerRun);
-}
+// timer object
+timer = {
+    // change to adjust timer length
+    count: 30,
+    run: null,
+    countDown: function () {
+        if (timer.count > 0) {
+            timer.count--
+            $("#timer").text(timer.count);
+        } else {
+            banner = "TIME UP! The correct answer is " + currentQuestion.correct();
+            losses++;
+            answerScreen();
+        }
+    },
+    start : function () {
+        this.run = setInterval(this.countDown, 1000 * 1);
+        // if time is up go to answerScreen
+        console.log(this.run);
+        return this.run;
+    },
+    stop : function () {
+        clearInterval(this.run);
+    },
+};
 // jQuery
 $(document).ready(function () {
     // $('main').children(".row").addClass('hide');
@@ -169,7 +170,6 @@ $(document).ready(function () {
         setTimeout(startButton, 1000 * .5);
     });
     $(".choice").click(function () {
-        questionOver = true;
         console.log(this.innerText);
         if (this.innerText === currentQuestion.correct()) {
             console.log("correct!");
