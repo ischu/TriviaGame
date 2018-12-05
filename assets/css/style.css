@@ -1,14 +1,15 @@
 html{ height: 100%;}
 body{
-    background-color: black;
-    color: white;
+    background: url(../images/simpsons_background.jpg);
+    color: black;
     align-content: center;
     text-align: center;
     height: 100%;
     display: flex;
 }
 .container{
-    background-color: blue;
+    background: white;
+    border: solid 1px rgb(242,88,167);
     height: 90%;
     align-self: center;
 }
@@ -23,12 +24,12 @@ img{
 }
 header{
     padding: 1em;
-    margin-top: 2em;
-    margin-bottom: 6em;
-    background-color: red;
+    margin-top: 3em;
+    margin-bottom: 5em;
+    background-color: rgb(254,212,29);
 }
 main{
-    background-color: green;
+    background: white;
     margin-bottom: 1em;
     height: 50%;
 }
@@ -43,12 +44,14 @@ main{
     padding: 1px;
 }
 .choice:hover{
-    background-color: purple;
+    background-color: rgb(254,212,29);
     padding: 0;
-    border: solid 1px black;
+    border: solid 1px rgb(242,88,167);
     cursor: pointer;
 }
 button{
+    background-color: rgb(242,88,167);
+    color: white;
     margin-left: auto;
     margin-right: auto;
 }
