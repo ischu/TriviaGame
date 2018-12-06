@@ -1,207 +1,214 @@
 $(document).ready(function () {
     // variables
+    game = {
+        // counters for wins and losses/timeouts
+        wins: 0,
+        losses: 0,
 
-    // counters for wins and losses/timeouts
-    var wins = 0;
-    var losses = 0;
+        // stores win/loss message 
+        banner: "error banner",
+        // question objects
+        questionArray: [
+            Q1 = {
+                question: "What is Moe the bartender's last name?",
+                choiceArr: ['Tarzarian', 'Shabadoop', 'Gumble', 'Syzlak'],
+                image: "assets/images/moe.png",
+                answer: 3,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q2 = {
+                question: "Where in the nuclear plant is Homer's office located?",
+                choiceArr: ['The Safety Zone', 'Sector 7-G', 'Area 51', 'Region 2-B'],
+                image: "assets/images/homer_work.jpg",
+                answer: 1,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q3 = {
+                question: "How old is Lisa Simpson?",
+                choiceArr: ['8', '10', '5', '12'],
+                image: "assets/images/lisa.jpg",
+                answer: 0,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q4 = {
+                question: "In what year was The Simpsons Movie released?",
+                choiceArr: ['1998', '2001', '2005', '2007'],
+                image: "assets/images/movie.jpg",
+                answer: 3,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q5 = {
+                question: "What is Police Chief Wiggum's first name?",
+                choiceArr: ['Poochie', 'Clancy', 'Edward', 'Charlie'],
+                image: "assets/images/Wiggum.png",
+                answer: 1,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q6 = {
+                question: "Before becoming its own show, Simpsons animated shorts appeared on what show?",
+                choiceArr: ['The Tracy Ullman Show', 'Saturday Night Live', 'Animated Laffs', 'The Tonight Show'],
+                image: "assets/images/ullman.jpg",
+                answer: 0,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q7 = {
+                question: "Who is the founder of the Simpsons' hometown of Springfield?",
+                choiceArr: ['C. Montgomery Burns', 'Shelbyville Manhattan', 'Ray Crock', 'Jebediah Springfield'],
+                image: "assets/images/jebediah.jpg",
+                answer: 3,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q8 = {
+                question: "Who is the voice of Marge Simpson?",
+                choiceArr: ['Julie Kavner', 'Tess McNeille', 'Yeardley Smith', 'Nancy Cartwright'],
+                image: "assets/images/kavner.jpg",
+                answer: 0,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q9 = {
+                question: "Who is the creator of the Simpsons?",
+                choiceArr: ['Matt Groening', 'Hank Azaria', 'Harry Shearer', 'Michael Jackson'],
+                image: "assets/images/groening.jpg",
+                answer: 0,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+            Q10 = {
+                question: "What is the name of the annual Simpsons Halloween Special?",
+                choiceArr: ['Simpsoween', 'Simpsons Scary Now', 'Night Gallery', 'Treehouse of Horror'],
+                image: "assets/images/horror.jpg",
+                answer: 3,
+                correct: function () {
+                    return this.choiceArr[this.answer]
+                },
+            },
+        ],
+        // tracks which question game is on
+        questionNumber: 0,
+        // these variables store detached sections of html
+        choiceSec: null,
+        timerSec: null,
 
-    // stores win/loss message 
-    var banner = "error banner";
-    // question objects
-    var questionArray = [
-        Q1 = {
-            question: "What is Moe the bartender's last name?",
-            choiceArr: ['Tarzarian', 'Shabadoop', 'Gumble', 'Syzlak'],
-            image: "assets/images/moe.png",
-            answer: 3,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
+        // function for choosing question
+        currentQuestion: function () {
+            CQ = this.questionArray[this.questionNumber];
+            return CQ;
         },
-        Q2 = {
-            question: "Where in the nuclear plant is Homer's office located?",
-            choiceArr: ['The Safety Zone', 'Sector 7-G', 'Area 51', 'Region 2-B'],
-            image: "assets/images/homer_work.jpg",
-            answer: 1,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q3 = {
-            question: "How old is Lisa Simpson?",
-            choiceArr: ['8', '10', '5', '12'],
-            image: "assets/images/lisa.jpg",
-            answer: 0,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q4 = {
-            question: "In what year was The Simpsons Movie released?",
-            choiceArr: ['1998', '2001', '2005', '2007'],
-            image: "assets/images/movie.jpg",
-            answer: 3,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q5 = {
-            question: "What is Police Chief Wiggum's first name?",
-            choiceArr: ['Poochie', 'Clancy', 'Edward', 'Charlie'],
-            image: "assets/images/Wiggum.png",
-            answer: 1,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q6 = {
-            question: "Before becoming its own show, Simpsons animated shorts appeared on what show?",
-            choiceArr: ['The Tracy Ullman Show', 'Saturday Night Live', 'Animated Laffs', 'The Tonight Show'],
-            image: "assets/images/ullman.jpg",
-            answer: 0,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q7 = {
-            question: "Who is the founder of the Simpsons' hometown of Springfield?",
-            choiceArr: ['C. Montgomery Burns', 'Shelbyville Manhattan', 'Ray Crock', 'Jebediah Springfield'],
-            image: "assets/images/jebediah.jpg",
-            answer: 3,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q8 = {
-            question: "Who is the voice of Marge Simpson?",
-            choiceArr: ['Julie Kavner', 'Tess McNeille', 'Yeardley Smith', 'Nancy Cartwright'],
-            image: "assets/images/kavner.jpg",
-            answer: 0,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q9 = {
-            question: "Who is the creator of the Simpsons?",
-            choiceArr: ['Matt Groening', 'Hank Azaria', 'Harry Shearer', 'Michael Jackson'],
-            image: "assets/images/groening.jpg",
-            answer: 0,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-        Q10 = {
-            question: "What is the name of the annual Simpsons Halloween Special?",
-            choiceArr: ['Simpsoween', 'Simpsons Scary Now', 'Night Gallery', 'Treehouse of Horror'],
-            image: "assets/images/horror.jpg",
-            answer: 3,
-            correct: function () {
-                return this.choiceArr[this.answer]
-            },
-        },
-    ];
-    // tracks which question game is on
-    var questionNumber = 0;
-    // these variables store unused sections of html
-    var choiceSec = null;
-    var timerSec = null;
+        // screen change functions
 
+        nextQuestion: function () {
+            console.log(game.currentQuestion());
+            // changes text in the question section to the question
+            $("#question").text(game.currentQuestion().question);
+            // adds choice section if missing
+            if (game.choiceSec) {
+                // places choice section back
+                $("#bottomRow").append(game.choiceSec);
+                // removes img
+                $("img").remove();
+                // clears choice var
+                game.choiceSec = null;
+            }
+            // while loop which places choices text in each choice section
+            i = 0;
+            while (i < 4) {
+                $("#choice" + i).text(game.currentQuestion().choiceArr[i]);
+                console.log("#choice" + i, game.currentQuestion().choiceArr[i]);
+                i++;
+            }
+            // starts timer
+            $("#timer").text(timer.count);
+            timer.start();
 
-    currentQuestion = function () {
-        CQ = questionArray[questionNumber];
-        return CQ;
-    }
-    // screen change functions
-    startButton = function () {
-        $("main").removeClass("hideDivs");
-        $("#start").remove();
-        nextQuestion();
-    }
+            console.log("the answer is " + game.currentQuestion().correct());
+        },
 
-    nextQuestion = function () {
-        console.log(currentQuestion());
-        // changes text in the question section to the question
-        $("#question").text(currentQuestion().question);
-        // adds choice section if missing
-        if (choiceSec) {
-            // places choice section back
-            $("#bottomRow").append(choiceSec);
-            // removes img
+        answerScreen: function () {
+            // changes question text to banner
+            $("#question").text(game.banner);
+            // detaches choice section and replaces them with the correct image
+            game.choiceSec = $("#choiceSection").detach();
+            $("#bottomRow").append("<img class='img-fluid' src=''/>");
+            $("img").attr("src", game.currentQuestion().image);
+            // increments question number so when nextQuestion runs, the next question will be chosen
+            game.questionNumber++;
+            // stops timer
+            timer.stop(timer.run);
+
+            // checks if last question has been reached
+            if (game.questionNumber < game.questionArray.length) {
+                // goes to next question after five seconds
+                setTimeout(game.nextQuestion, 1000 * 1);
+                console.log(game.questionNumber, game.questionArray.length);
+            }
+            else {
+                // goes to final screen after 5 second
+                setTimeout(game.finalScreen, 1000 * 1);
+                console.log("ya done");
+            };
+        },
+
+        finalScreen: function () {
+            // display win/loss
+            $("#questionSection p").text("You answered " + game.wins + " questions correctly and " + game.losses + " questions incorrectly.");
+            // remove img & timer, display restart button
             $("img").remove();
-            // clears choice var
-            choiceSec = null;
-        }
-        // while loop which places choices text in each choice section
-        i = 0;
-        while (i < 4) {
-            $("#choice" + i).text(currentQuestion().choiceArr[i]);
-            console.log("#choice" + i, currentQuestion().choiceArr[i]);
-            i++;
-        }
-        // starts timer
-        $("#timer").text(timer.count);
-        timer.start();
+            game.timerSec = $("#timerSection p").detach();
+            // onclick='playAgain()'
+            $("#bottomRow").before("<button id='replayButton'>Play again?</button>");
+            $("#replayButton").click(function () {
+                console.log("replay");
+                game.playAgain();
+            });
+        },
 
-        console.log("the answer is " + currentQuestion().correct());
-    }
+        startButton: function () {
+            $("main").removeClass("hideDivs");
+            $("#start").remove();
+            game.nextQuestion();
+        },
 
-    answerScreen = function () {
-        // changes question text to banner
-        $("#question").text(banner);
-        // detaches choice section and replaces them with the correct image
-        choiceSec = $("#choiceSection").detach();
-        $("#bottomRow").append("<img class='img-fluid' src=''/>");
-        $("img").attr("src", currentQuestion().image);
-        // increments question number so when nextQuestion runs, the next question will be chosen
-        questionNumber++;
-        // stops timer
-        timer.stop(timer.run);
+        playAgain: function () {
+            $("#bottomRow").append(game.choiceSec);
+            $("#timerSection").append(game.timerSec);
+            game.questionNumber = 0;
+            game.wins = 0;
+            game.losses = 0;
+            $("#replayButton").remove();
+            game.nextQuestion();
 
-        // checks if last question has been reached
-        if (questionNumber < questionArray.length) {
-            // goes to next question after five seconds
-            setTimeout(nextQuestion, 1000 * 1);
-            console.log(questionNumber, questionArray.length);
-        }
-        else {
-            // goes to final screen after 5 second
-            setTimeout(finalScreen, 1000 * 1);
-            console.log("ya done");
-        };
-    }
-
-    finalScreen = function () {
-        // display win/loss
-        $("#questionSection p").text("You answered " + wins + " questions correctly and " + losses + " questions incorrectly.");
-        // remove img & timer, display restart button
-        $("img").remove();
-        timerSec = $("#timerSection p").detach();
-        $("#bottomRow").before("<button id='replayButton' onclick='playAgain()'>Play again?</button>");
-    }
-
-    playAgain = function () {
-        $("#bottomRow").append(choiceSec);
-        $("#timerSection").append(timerSec);
-        questionNumber = 0;
-        wins = 0;
-        losses = 0;
-        $("#replayButton").remove();
-        nextQuestion();
-
-    }
+        },
+    };
     // timer object
     timer = {
         // change to adjust timer length
-        count: 30,
+        count: 20,
         run: null,
         countDown: function () {
             if (timer.count > 0) {
-                timer.count--
+                timer.count--;
                 $("#timer").text(timer.count);
             } else {
-                answerScreen();
-                banner = "TIME UP! The correct answer is " + currentQuestion().correct();
-                losses++;
+                game.banner = "TIME UP! The correct answer is " + game.currentQuestion().correct();
+                game.losses++;
+                game.answerScreen();
             }
         },
         start: function () {
@@ -212,7 +219,7 @@ $(document).ready(function () {
         },
         stop: function () {
             clearInterval(this.run);
-            this.count = 30;
+            this.count = 20;
         },
     };
     // jQuery
@@ -222,25 +229,22 @@ $(document).ready(function () {
 
     $("#start").click(function () {
         // wait 1/2 second
-        setTimeout(startButton, 1000 * .5);
+        setTimeout(game.startButton, 1000 * .5);
     });
     $(".choice").click(function () {
         console.log(this.innerText);
-        if (this.innerText === currentQuestion().correct()) {
+        if (this.innerText === game.currentQuestion().correct()) {
             console.log("correct!");
-            banner = "CORRECT!";
-            wins++;
+            game.banner = "CORRECT!";
+            game.wins++;
         }
         else {
             console.log("wrong!");
-            banner = "WRONG! The correct answer is " + currentQuestion().correct();
-            losses++;
+            game.banner = "WRONG! The correct answer is " + game.currentQuestion().correct();
+            game.losses++;
         }
-        answerScreen();
+        game.answerScreen();
     });
     // didn't work for some reason so i just put an onclick in the button html
-    // $("#replayButton").click(function() {
-    //     console.log("replay");
-    //     playAgain();
-    // });
+
 });
