@@ -20,6 +20,7 @@ body{
     background: white;
     border: solid 1px rgb(242,88,167);
     height: 90%;
+    width: 80%;
     align-self: center;
 }
 .hideDivs div{
@@ -73,16 +74,17 @@ p{
     border: solid 1px rgb(242,88,167);
     cursor: pointer;
 }
-.btn{
+.btn, .btn:focus{
     font-family: simpsonsFont, sans-serif;
     background-color: rgb(242,88,167);
     border-color: rgb(242,88,167);
     color: white;
     margin-left: auto;
     margin-right: auto;
+    
 }
 
-.btn:focus, .btn:active{
+.btn:hover{
     font-family: simpsonsFont, sans-serif;
     background-color: white;
     border-color: rgb(242,88,167);

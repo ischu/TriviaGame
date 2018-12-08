@@ -10,10 +10,11 @@ $(document).ready(function () {
         // question objects
         questionArray: [
             Q1 = {
-                question: "What is Moe the bartender's last name?",
-                choiceArr: ['Tarzarian', 'Shabadoop', 'Gumble', 'Syzlak'],
-                image: "assets/images/moe.png",
-                answer: 3,
+                question: "What is Police Chief Wiggum's first name?",
+                choiceArr: ['Poochie', 'Clancy', 'Edward', 'Charlie'],
+                image: "assets/images/Wiggum.png",
+                clip: "wiggum",
+                answer: 1,
                 correct: function () {
                     return this.choiceArr[this.answer]
                 },
@@ -22,6 +23,7 @@ $(document).ready(function () {
                 question: "Where in the nuclear plant does Homer work?",
                 choiceArr: ['The Safety Zone', 'Sector 7-G', 'Area 51', 'Region 2-B'],
                 image: "assets/images/homer_work.jpg",
+                clip: "not_worth_it",
                 answer: 1,
                 correct: function () {
                     return this.choiceArr[this.answer]
@@ -31,6 +33,7 @@ $(document).ready(function () {
                 question: "How old is Lisa Simpson?",
                 choiceArr: ['8', '10', '5', '12'],
                 image: "assets/images/lisa.jpg",
+                clip: "lisa",
                 answer: 0,
                 correct: function () {
                     return this.choiceArr[this.answer]
@@ -40,16 +43,18 @@ $(document).ready(function () {
                 question: "In what year was The Simpsons Movie released?",
                 choiceArr: ['1998', '2001', '2005', '2007'],
                 image: "assets/images/movie.jpg",
+                clip: "donuts",
                 answer: 3,
                 correct: function () {
                     return this.choiceArr[this.answer]
                 },
             },
             Q5 = {
-                question: "What is Police Chief Wiggum's first name?",
-                choiceArr: ['Poochie', 'Clancy', 'Edward', 'Charlie'],
-                image: "assets/images/Wiggum.png",
-                answer: 1,
+                question: "What is Moe the bartender's last name?",
+                choiceArr: ['Tarzarian', 'Shabadoop', 'Gumble', 'Syzlak'],
+                image: "assets/images/moe.png",
+                clip: "moe",
+                answer: 3,
                 correct: function () {
                     return this.choiceArr[this.answer]
                 },
@@ -58,15 +63,17 @@ $(document).ready(function () {
                 question: "In the mid 1980's, Simpsons animated shorts appeared on what show?",
                 choiceArr: ['The Tracy Ullman Show', 'Saturday Night Live', 'Animated Laffs', 'The Tonight Show'],
                 image: "assets/images/ullman.jpg",
+                clip: "ullman",
                 answer: 0,
                 correct: function () {
                     return this.choiceArr[this.answer]
                 },
             },
             Q7 = {
-                question: "Who is the founder of the Simpsons' hometown of Springfield?",
+                question: "Who is the founder of the Simpsons' hometown?",
                 choiceArr: ['C. Montgomery Burns', 'Shelbyville Manhattan', 'Ray Crock', 'Jebediah Springfield'],
                 image: "assets/images/jebediah.jpg",
+                clip: "great",
                 answer: 3,
                 correct: function () {
                     return this.choiceArr[this.answer]
@@ -76,6 +83,7 @@ $(document).ready(function () {
                 question: "Who is the voice of Marge Simpson?",
                 choiceArr: ['Julie Kavner', 'Tess McNeille', 'Yeardley Smith', 'Nancy Cartwright'],
                 image: "assets/images/kavner.jpg",
+                clip: "marge",
                 answer: 0,
                 correct: function () {
                     return this.choiceArr[this.answer]
@@ -85,6 +93,7 @@ $(document).ready(function () {
                 question: "Who is the creator of the Simpsons?",
                 choiceArr: ['Matt Groening', 'Hank Azaria', 'Harry Shearer', 'Michael Jackson'],
                 image: "assets/images/groening.jpg",
+                clip: "internet6",
                 answer: 0,
                 correct: function () {
                     return this.choiceArr[this.answer]
@@ -94,6 +103,7 @@ $(document).ready(function () {
                 question: "What is the name of the annual Simpsons Halloween Special?",
                 choiceArr: ['Simpsoween', 'Simpsons Scary Now', 'Night Gallery', 'Treehouse of Horror'],
                 image: "assets/images/horror.jpg",
+                clip: "kang",
                 answer: 3,
                 correct: function () {
                     return this.choiceArr[this.answer]
@@ -107,13 +117,21 @@ $(document).ready(function () {
         timerSec: null,
 
         // sets wait time before loading next question/final screen
-        screenDelay: 3,
+        screenDelay: 3.5,
+
+        // function for playing audio
+        playClip: function(clip) {
+            $("#sound").attr("src", "assets/audio/" + clip + ".wav");
+            console.log($("#sound").attr("src"));
+            $("audio")[0].load();
+            $("audio")[0].play();
+        },
 
         // function for choosing question
         currentQuestion: function () {
             return this.questionArray[this.questionNumber];
         },
-      
+
         // screen change functions
 
         nextQuestion: function () {
@@ -143,6 +161,8 @@ $(document).ready(function () {
         },
 
         answerScreen: function () {
+            // play audio clip
+            game.playClip(game.currentQuestion().clip);
             // changes question text to banner
             $("#question").text(game.banner);
             // detaches choice section and replaces them with the correct image
@@ -166,6 +186,8 @@ $(document).ready(function () {
         },
 
         finalScreen: function () {
+            // play end theme
+            game.playClip("endTheme");
             // display win/loss
             $("#questionSection p").text("You answered " + game.wins + " questions correctly and " + game.losses + " questions incorrectly.");
             // remove img & timer, display restart button
@@ -180,9 +202,13 @@ $(document).ready(function () {
         },
 
         startButton: function () {
+            // reveal divs
             $("main").removeClass("hideDivs");
+            // remove self
             $("#start").remove();
+            //cue up first question
             game.nextQuestion();
+
         },
 
         playAgain: function () {
@@ -222,14 +248,16 @@ $(document).ready(function () {
             this.count = 20;
         },
     };
-    // jQuery
+    jQuery
 
     // $('main').children(".row").addClass('hide');
     $("#timerSection").after("<button id='start' class='btn'>START</button>");
 
     $("#start").click(function () {
-        // wait 1/2 second
-        setTimeout(game.startButton, 1000 * .5);
+        // play intro clip
+        game.playClip("introTheme");
+        // wait 2 seconds for clip to play
+        setTimeout(game.startButton, 1000 * 2);
     });
     $(".choice").click(function () {
         console.log(this.innerText);
