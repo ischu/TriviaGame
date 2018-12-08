@@ -92,7 +92,7 @@ $(document).ready(function () {
             Q9 = {
                 question: "Who is the creator of the Simpsons?",
                 choiceArr: ['Matt Groening', 'Hank Azaria', 'Harry Shearer', 'Michael Jackson'],
-                image: "assets/images/groening.jpg",
+                image: "assets/images/Groening.jpg",
                 clip: "internet6",
                 answer: 0,
                 correct: function () {
