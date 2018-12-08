@@ -1,4 +1,12 @@
 html{ height: 100%;}
+@font-face{
+    font-family: actionMan;
+    src: url("../css/fonts/Action-Man/Action_Man.ttf");
+}
+@font-face{
+    font-family: simpsonsFont;
+    src: url("../css/fonts/Simpsonfont\ DEMO.otf");
+}
 body{
     background: url(../images/simpsons_background.jpg);
     color: black;
@@ -6,6 +14,7 @@ body{
     text-align: center;
     height: 100%;
     display: flex;
+    font-family: actionMan, monospace;
 }
 .container{
     background: white;
@@ -23,22 +32,37 @@ img{
     margin-right: auto;
 }
 header{
+    font-family: simpsonsFont, sans-serif;
     padding: 1em;
     margin-top: 3em;
     margin-bottom: 5em;
     background-color: rgb(254,212,29);
 }
 main{
+
     background: white;
     margin-bottom: 1em;
     height: 50%;
 }
+p{
+    font-family: actionMan, monospace;
+    font-size: 20px;
+}
+#question{
+    /* font-family: simpsonsFont, sans-serif; */
+    font-weight: bold;
+}
+#timerSection{
+    font-family: monospace;
+}
 #choiceSection{
     text-align: left;
+    text-indent: 1em;
 }
 #bottomRow{
     height: 50%;
 }
+
 .choice{
     width: 100%;
     padding: 1px;
@@ -49,9 +73,19 @@ main{
     border: solid 1px rgb(242,88,167);
     cursor: pointer;
 }
-button{
+.btn{
+    font-family: simpsonsFont, sans-serif;
     background-color: rgb(242,88,167);
+    border-color: rgb(242,88,167);
     color: white;
     margin-left: auto;
     margin-right: auto;
+}
+
+.btn:focus, .btn:active{
+    font-family: simpsonsFont, sans-serif;
+    background-color: white;
+    border-color: rgb(242,88,167);
+    color: rgb(242,88,167);   
+    box-shadow: none;
 }

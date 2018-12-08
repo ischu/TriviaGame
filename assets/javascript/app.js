@@ -19,7 +19,7 @@ $(document).ready(function () {
                 },
             },
             Q2 = {
-                question: "Where in the nuclear plant is Homer's office located?",
+                question: "Where in the nuclear plant does Homer work?",
                 choiceArr: ['The Safety Zone', 'Sector 7-G', 'Area 51', 'Region 2-B'],
                 image: "assets/images/homer_work.jpg",
                 answer: 1,
@@ -55,7 +55,7 @@ $(document).ready(function () {
                 },
             },
             Q6 = {
-                question: "Before becoming its own show, Simpsons animated shorts appeared on what show?",
+                question: "In the mid 1980's, Simpsons animated shorts appeared on what show?",
                 choiceArr: ['The Tracy Ullman Show', 'Saturday Night Live', 'Animated Laffs', 'The Tonight Show'],
                 image: "assets/images/ullman.jpg",
                 answer: 0,
@@ -106,18 +106,21 @@ $(document).ready(function () {
         choiceSec: null,
         timerSec: null,
 
+        // sets wait time before loading next question/final screen
+        screenDelay: 3,
+
         // function for choosing question
         currentQuestion: function () {
-            CQ = this.questionArray[this.questionNumber];
-            return CQ;
+            return this.questionArray[this.questionNumber];
         },
+      
         // screen change functions
 
         nextQuestion: function () {
             console.log(game.currentQuestion());
             // changes text in the question section to the question
             $("#question").text(game.currentQuestion().question);
-            // adds choice section if missing
+            // adds choice section if missing 
             if (game.choiceSec) {
                 // places choice section back
                 $("#bottomRow").append(game.choiceSec);
@@ -130,7 +133,6 @@ $(document).ready(function () {
             i = 0;
             while (i < 4) {
                 $("#choice" + i).text(game.currentQuestion().choiceArr[i]);
-                console.log("#choice" + i, game.currentQuestion().choiceArr[i]);
                 i++;
             }
             // starts timer
@@ -154,14 +156,12 @@ $(document).ready(function () {
 
             // checks if last question has been reached
             if (game.questionNumber < game.questionArray.length) {
-                // goes to next question after five seconds
-                setTimeout(game.nextQuestion, 1000 * 1);
-                console.log(game.questionNumber, game.questionArray.length);
+                // goes to next question after however many seconds
+                setTimeout(game.nextQuestion, 1000 * game.screenDelay);
             }
             else {
-                // goes to final screen after 5 second
-                setTimeout(game.finalScreen, 1000 * 1);
-                console.log("ya done");
+                // goes to final screen after however many second
+                setTimeout(game.finalScreen, 1000 * game.screenDelay);
             };
         },
 
@@ -172,7 +172,7 @@ $(document).ready(function () {
             $("img").remove();
             game.timerSec = $("#timerSection p").detach();
             // onclick='playAgain()'
-            $("#bottomRow").before("<button id='replayButton'>Play again?</button>");
+            $("#bottomRow").before("<button id='replayButton' class='btn'>Play again?</button>");
             $("#replayButton").click(function () {
                 console.log("replay");
                 game.playAgain();
@@ -225,7 +225,7 @@ $(document).ready(function () {
     // jQuery
 
     // $('main').children(".row").addClass('hide');
-    $("#timerSection").after("<button id='start'>START</button>");
+    $("#timerSection").after("<button id='start' class='btn'>START</button>");
 
     $("#start").click(function () {
         // wait 1/2 second
@@ -235,16 +235,15 @@ $(document).ready(function () {
         console.log(this.innerText);
         if (this.innerText === game.currentQuestion().correct()) {
             console.log("correct!");
-            game.banner = "CORRECT!";
+            game.banner = "Woo-hoo!";
             game.wins++;
         }
         else {
             console.log("wrong!");
-            game.banner = "WRONG! The correct answer is " + game.currentQuestion().correct();
+            game.banner = "D'oh! The correct answer is " + game.currentQuestion().correct();
             game.losses++;
         }
         game.answerScreen();
     });
-    // didn't work for some reason so i just put an onclick in the button html
 
 });
